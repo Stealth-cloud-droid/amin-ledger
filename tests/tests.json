@@ -1,0 +1,81 @@
+[
+  {
+    "name": "Sign in and record a credit sale",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "authentication",
+      "customer creation",
+      "credit sale creation",
+      "user-scoped database persistence",
+      "dashboard outstanding balance"
+    ],
+    "description": "Verifies a signed-in trader can create a customer and record goods sold on credit, with the outstanding balance reflected in the dashboard.",
+    "steps": [
+      "Sign in to Amin Ledger",
+      "Add a customer named Aunty Bisi with phone number 08012345678",
+      "Record a credit sale for 2 bags of rice at ₦25000 each for Aunty Bisi",
+      "Open the Overview page"
+    ],
+    "expected": "Aunty Bisi appears in the customer ledger, the credit sale totals ₦50,000, and the outstanding balance shows ₦50,000."
+  },
+  {
+    "name": "Record a partial payment and share a reminder",
+    "viewport": "desktop",
+    "covers": [
+      "payment creation",
+      "outstanding balance calculation",
+      "WhatsApp reminder message generation"
+    ],
+    "description": "Verifies a payment reduces the customer balance and a customer with a phone number can receive a prefilled reminder message.",
+    "setup": [
+      "Create customer Aunty Bisi with phone 08012345678",
+      "Record a credit sale for Aunty Bisi totaling ₦50,000"
+    ],
+    "steps": [
+      "Record a payment of ₦20,000 for Aunty Bisi",
+      "Open Customers",
+      "Verify the outstanding balance",
+      "Click the WhatsApp reminder action for Aunty Bisi"
+    ],
+    "expected": "The outstanding balance is ₦30,000 and WhatsApp opens with a reminder message containing the customer name and current balance."
+  },
+  {
+    "name": "Edit a customer and retain ledger data after reload",
+    "viewport": "desktop",
+    "covers": [
+      "customer update",
+      "persistent database records",
+      "ledger refresh"
+    ],
+    "description": "Verifies customer details can be edited without losing the customer's existing sales and that saved records remain after a reload.",
+    "setup": ["Create customer named Tunde Shop"],
+    "steps": [
+      "Edit Tunde Shop's name to Tunde Stores",
+      "Refresh the browser",
+      "Open Customers"
+    ],
+    "expected": "Tunde Stores remains in the customer list after refresh."
+  },
+  {
+    "name": "Reject invalid or excessive payment and protect customer records",
+    "viewport": "mobile",
+    "covers": [
+      "form validation",
+      "payment balance guardrail",
+      "customer deletion protection",
+      "responsive mobile workflow"
+    ],
+    "description": "Verifies invalid payments are rejected and customers with related sales cannot be deleted.",
+    "setup": [
+      "Create customer named Mama Kemi",
+      "Record a credit sale for Mama Kemi totaling ₦5,000"
+    ],
+    "steps": [
+      "Try to record a payment of ₦8,000 for Mama Kemi",
+      "Submit the payment",
+      "Attempt to delete Mama Kemi from the customer list"
+    ],
+    "expected": "The payment is rejected with a clear message that it exceeds the outstanding balance, and the customer cannot be deleted while related sales exist."
+  }
+]
